@@ -1,0 +1,2 @@
+ninja: Entering directory `/home/sebas/Documentos/CICLO_7/VISION/PRACTICA3_1/app_android/opencv/.cxx/Debug/10133527/arm64-v8a'
+ninja: no work to do.
