@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/btn_take_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tomar FOto" />
+
+        <Button
+            android:id="@+id/btn_select_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Seleccionar Foto" />
+
+        <Button
+            android:id="@+id/btn_procesar_imagenes_lbp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Procesar Imágenes LBP" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@id/button_container"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/image_view_grayscale"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
+</RelativeLayout>

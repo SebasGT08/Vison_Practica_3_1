@@ -29,7 +29,10 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         native-lib.cpp
         parte1.cpp
-        parte1.h)
+        parte1.h
+        parte2.cpp
+        parte2.h
+  )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

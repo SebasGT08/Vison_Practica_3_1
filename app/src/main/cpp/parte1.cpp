@@ -184,7 +184,7 @@ void preprocesamiento(const Mat& frame, Mat& framePreprocesado) {
     framePreprocesado = imagenRelleno;
 }
 
-void detectar(Mat& frame, bool modoDibujar) {
+void detectar(Mat& frame) {
     Mat framePreprocesado;
     preprocesamiento(frame, framePreprocesado);
 
@@ -204,7 +204,7 @@ void detectar(Mat& frame, bool modoDibujar) {
 //    LOGD("Figura identificada: %s", figuraIdentificada.c_str());
 
     frame = framePreprocesado;
-    if (modoDibujar && momentos.m00 > 0) {
+    if ( momentos.m00 > 0) {
         int x = static_cast<int>(momentos.m10 / momentos.m00);
         int y = static_cast<int>(momentos.m01 / momentos.m00);
         putText(frame, figuraIdentificada, Point(x, y), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 255), 2);

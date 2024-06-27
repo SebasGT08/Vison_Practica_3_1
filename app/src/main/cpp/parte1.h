@@ -22,6 +22,6 @@ std::string identificarFigura(const std::vector<double>& momentosHu, const std::
 void esquelitizar(const cv::Mat& imgBinaria, cv::Mat& imgEsqueleto);
 void procesarImagenesEnCarpeta(AAssetManager* assetManager, const std::string& rutaCarpeta, std::vector<std::pair<std::vector<double>, std::vector<double>>>& momentosHuZernikeFigura);
 void preprocesamiento(const cv::Mat& frame, cv::Mat& framePreprocesado);
-void detectar(cv::Mat& frame, bool modoDibujar);
+void detectar(cv::Mat& frame);
 
 #endif //PROYECTO_VISON_PARTE1_H

@@ -37,6 +37,8 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import okio.ByteString;
 
+import android.content.Intent;
+
 public class MainActivity extends CameraActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
     private static final String TAG = "MainActivity";
@@ -49,6 +51,7 @@ public class MainActivity extends CameraActivity implements CameraBridgeViewBase
     private boolean esModoDibujar = true; // Modo de dibujo inicial
 
     static {
+
         System.loadLibrary("proyecto_vison");
     }
 
@@ -88,8 +91,10 @@ public class MainActivity extends CameraActivity implements CameraBridgeViewBase
         // Configurar botón para cambiar el modo de dibujo
         Button botonCambiarModoDibujo = findViewById(R.id.switch_draw_mode_button);
         botonCambiarModoDibujo.setOnClickListener(v -> {
-            esModoDibujar = !esModoDibujar; // Cambiar modo de dibujo
+            Intent intent = new Intent(MainActivity.this, ImagePickerActivity.class);
+            startActivity(intent);
         });
+
 
         // Configurar botón para calcular momentos de Hu
         Button botonCalcularHu = findViewById(R.id.calculate_hu_button);
