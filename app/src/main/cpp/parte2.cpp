@@ -56,7 +56,8 @@ void procesarImagenesEnCarpetaLBP(AAssetManager* assetManager, const string& rut
                 continue;
             }
 
-            vector<int> histoLBP = calcularLBP(imagen);
+            Mat lbpImagen;
+            vector<int> histoLBP = calcularLBP(imagen, lbpImagen);
             clasificadoresLBP.emplace_back(histoLBP, rutaCarpeta);
 
             LOGD("Histograma LBP calculado y almacenado para %s", rutaArchivo.c_str());
@@ -66,7 +67,8 @@ void procesarImagenesEnCarpetaLBP(AAssetManager* assetManager, const string& rut
 }
 
 string identificarFiguraLBP(const Mat& imagen) {
-    vector<int> histoLBP = calcularLBP(imagen);
+    Mat lbpImagen;
+    vector<int> histoLBP = calcularLBP(imagen, lbpImagen);
 
     double menorDistancia = DBL_MAX;
     string claseIdentificada = "Desconocido";
@@ -91,15 +93,52 @@ string identificarFiguraLBP(const Mat& imagen) {
     return claseIdentificada;
 }
 
-void detectarLBP(Mat& frame) {
+Mat generarHistograma(const Mat& imagen) {
+    // Calcular el histograma
+    int histSize = 256;
+    float range[] = {0, 256};
+    const float* histRange = {range};
+    Mat hist;
+    calcHist(&imagen, 1, 0, Mat(), hist, 1, &histSize, &histRange, true, false);
+
+    // Normalizar el histograma
+    int histWidth = 512, histHeight = 400;
+    int binWidth = cvRound((double) histWidth / histSize);
+    Mat histImage(histHeight, histWidth, CV_8UC1, Scalar(255, 255, 255));
+
+    normalize(hist, hist, 0, histImage.rows, NORM_MINMAX, -1, Mat());
+
+    // Dibujar el histograma
+    for (int i = 1; i < histSize; i++) {
+        line(histImage, Point(binWidth * (i - 1), histHeight - cvRound(hist.at<float>(i - 1))),
+             Point(binWidth * i, histHeight - cvRound(hist.at<float>(i))),
+             Scalar(0, 0, 0), 2, 8, 0);
+    }
+
+    return histImage;
+}
+
+
+
+void detectarLBP(Mat& frame,Mat& histImage) {
+
+    Mat lbpImagen;
+    vector<int> histoLBP = calcularLBP(frame, lbpImagen);
+
+    // Copiar la imagen LBP generada al frame de resultado
+    lbpImagen.copyTo(frame);
+
     string figuraIdentificada = identificarFiguraLBP(frame);
 
     // Calcular el factor de escala basado en la altura de la imagen
-    double scaleFactor = frame.rows / 500.0;
+    double scaleFactor = frame.rows / 350.0;
 
     // Ajustar el grosor del contorno del texto para que sea proporcional
     int thickness = static_cast<int>(2 * scaleFactor);
 
     // Poner el texto en la imagen usando el factor de escala
-    putText(frame, figuraIdentificada, Point(10, frame.rows - 50), FONT_HERSHEY_SIMPLEX, scaleFactor, Scalar(255, 0, 0), thickness);
+    putText(frame, figuraIdentificada, Point(10, frame.rows - 50), FONT_HERSHEY_SIMPLEX, scaleFactor, Scalar(255, 255, 255), thickness);
+
+    // Generar el histograma de la imagen LBP
+    histImage = generarHistograma(lbpImagen);
 }

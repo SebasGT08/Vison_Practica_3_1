@@ -41,7 +41,7 @@ public class ImagePickerActivity extends AppCompatActivity {
         System.loadLibrary("proyecto_vison");
     }
 
-    public native void procesarParte2(long matAddrRgba, long matAddrRes);
+    public native void procesarParte2(long matAddrRgba, long matAddrRes, long matAddrHist);
     public native void procesarImagenesLBP(AssetManager assetManager);
 
     @Override
@@ -138,9 +138,17 @@ public class ImagePickerActivity extends AppCompatActivity {
         Mat matOriginal = new Mat();
         Utils.bitmapToMat(bitmapOriginal, matOriginal);
         Mat matRes = new Mat(matOriginal.rows(), matOriginal.cols(), CvType.CV_8UC1);
-        procesarParte2(matOriginal.getNativeObjAddr(), matRes.getNativeObjAddr());
+        Mat matHist = new Mat(); // Mat para el histograma
+        procesarParte2(matOriginal.getNativeObjAddr(), matRes.getNativeObjAddr(), matHist.getNativeObjAddr());
         Bitmap bitmapRes = Bitmap.createBitmap(matRes.cols(), matRes.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(matRes, bitmapRes);
         imageViewGrayscale.setImageBitmap(bitmapRes);
+
+        // Convertir el histograma a Bitmap y mostrarlo en un nuevo ImageView
+        Bitmap bitmapHist = Bitmap.createBitmap(matHist.cols(), matHist.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(matHist, bitmapHist);
+        ImageView imageViewHist = findViewById(R.id.image_view_hist); // Asegúrate de tener este ImageView en tu layout
+        imageViewHist.setImageBitmap(bitmapHist);
     }
+
 }

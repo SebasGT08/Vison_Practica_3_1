@@ -54,8 +54,9 @@ int* LBP8(const int* data, int rows, int columns) {
     return result;
 }
 
-vector<int> calcularLBP(const Mat& imagen) {
+vector<int> calcularLBP(const Mat& imagen, Mat& lbpImagen) {
     int *datos = (int *) malloc(imagen.rows * imagen.cols * sizeof(int));
+    lbpImagen = Mat::zeros(imagen.size(), CV_8UC1);
 
     for (int i = 0, k = 0; i < imagen.rows; i++) {
         for (int j = 0; j < imagen.cols; j++) {
@@ -69,6 +70,43 @@ vector<int> calcularLBP(const Mat& imagen) {
         histo.push_back(res[i]);
         LOGD("%d", res[i]);
     }
+
+    // Generar la imagen LBP
+    const int* p0 = datos;
+    const int* p1 = p0 + 1;
+    const int* p2 = p1 + 1;
+    const int* p3 = p2 + imagen.cols;
+    const int* p4 = p3 + imagen.cols;
+    const int* p5 = p4 - 1;
+    const int* p6 = p5 - 1;
+    const int* p7 = p6 - imagen.cols;
+    const int* center = p7 + 1;
+    for (int r = 0; r < imagen.rows - 2; r++) {
+        for (int c = 0; c < imagen.cols - 2; c++) {
+            unsigned int value = 0;
+            int cntr = *center - 1;
+            compab_mask_inc(p0, 0);
+            compab_mask_inc(p1, 1);
+            compab_mask_inc(p2, 2);
+            compab_mask_inc(p3, 3);
+            compab_mask_inc(p4, 4);
+            compab_mask_inc(p5, 5);
+            compab_mask_inc(p6, 6);
+            compab_mask_inc(p7, 7);
+            lbpImagen.at<uchar>(r + 1, c + 1) = static_cast<uchar>(value);
+            center++;
+        }
+        p0 += 2;
+        p1 += 2;
+        p2 += 2;
+        p3 += 2;
+        p4 += 2;
+        p5 += 2;
+        p6 += 2;
+        p7 += 2;
+        center += 2;
+    }
+
     free(datos);
     free(res);
     return histo;

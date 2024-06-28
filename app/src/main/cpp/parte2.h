@@ -10,13 +10,14 @@
 #include <vector>
 #include <string>
 
+using namespace std;
 using namespace cv;
 
-extern std::vector<std::pair<std::vector<int>, std::string>> clasificadoresLBPClase1;
-extern std::vector<std::pair<std::vector<int>, std::string>> clasificadoresLBPClase2;
+extern vector<pair<vector<int>, string>> clasificadoresLBPClase1;
+extern vector<pair<vector<int>, string>> clasificadoresLBPClase2;
 
-void procesarImagenesEnCarpetaLBP(AAssetManager* assetManager, const std::string& rutaCarpeta, std::vector<std::pair<std::vector<int>, std::string>>& clasificadoresLBP);
-std::string identificarFigura(const Mat& imagen);
-void detectarLBP(Mat& frame);
+void procesarImagenesEnCarpetaLBP(AAssetManager* assetManager, const string& rutaCarpeta, vector<pair<vector<int>, string>>& clasificadoresLBP);
+string identificarFiguraLBP(const Mat& imagen);
+void detectarLBP(Mat& frame,Mat& histImage);
 
 #endif //PROYECTO_VISON_PARTE2_H

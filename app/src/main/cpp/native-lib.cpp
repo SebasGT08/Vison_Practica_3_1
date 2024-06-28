@@ -48,12 +48,14 @@ Java_com_example_proyecto_1vison_MainActivity_calcularMomentosHuYzernike(JNIEnv*
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_example_proyecto_1vison_ImagePickerActivity_procesarParte2(JNIEnv* env, jobject, jlong direccionMatRgba, jlong direccionMatRes) {
+Java_com_example_proyecto_1vison_ImagePickerActivity_procesarParte2(JNIEnv* env, jobject, jlong direccionMatRgba, jlong direccionMatRes, jlong direccionMatHist) {
     Mat& matOriginal = *(Mat*)direccionMatRgba;
     Mat& matRes = *(Mat*)direccionMatRes;
+    Mat& matHist = *(Mat*)direccionMatHist;
 
     cvtColor(matOriginal, matRes, COLOR_RGBA2BGR);
-    detectarLBP(matRes);
+    detectarLBP(matRes, matHist);
+
 }
 
 extern "C" JNIEXPORT void JNICALL
